@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logical Assignment I: The 'Or' Operator</title>
+</head>
+<body>
+
+<script>
+
+var armory = {
+    addSword: function(sword) {
+        this.swords = this.swords ? this.swords : [ ];
+        this.swords.push(sword);
+    }
+};
+
+// if this property doesn't exist, it will be created as an empty array, and then assigned to a newly created swords property
+
+// and then it will add sword to our array
+
+armory.addSword("Longsword");
+console.log(armory);
+
+</script>
+
+</body>
+</html>

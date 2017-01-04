@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Great resourse:
+    https://modernweb.com/45-useful-javascript-tips-tricks-and-best-practices/ -->
+    <meta charset="UTF-8">
+    <title>IIFE or Self-Invoked Anonymous Function</title>
+</head>
+<body>
+
+<h1>IIFE or Self-Invoked Anonymous Function</h1>
+
+<h2>Source is here: <a href="https://modernweb.com/45-useful-javascript-tips-tricks-and-best-practices/">45 JS Tips and Tricks</a></h2>
+
+<p>This is often called a Self-Invoked Anonymous Function or Immediately Invoked Function Expression (IIFE). It is a function that executes automatically when you create it, and has the following form:</p>
+
+
+<script>
+
+(function() {
+    console.log("Hello, World!");
+})();
+
+// another example:
+(function(a,b) {
+    var result = a + b;
+    console.log(result);
+    return result;
+})(2,3);
+
+
+
+// Trick to trim strings:
+// The classic trim function of Java, C#, PHP and many other language that remove whitespace from a string doesn’t exist in JavaScript, so we could add it to the String object.
+
+String.prototype.trim = function() {
+    var newString = this.replace(/^s+|s+$/g, "");
+    console.log(newString);
+    return newString;
+};
+
+var myString = "Masha is a beautiful human being.";
+myString.trim();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ternary Conditionals</title>
+</head>
+<body>
+
+<h1>Ternary Conditionals</h1>
+
+someCondition ? pickThisIfTrue : pickThisIfFalse;
+
+<script>
+
+var isArthur = true;
+var isKing = false;
+var isArcher = true;
+var weapon;
+var helmet;
+// this takes 2 blocks of code just to get one assignment finished. Let's use syntax trick to make this more concise
+
+// if (isArthur) {
+//     weapon = "Excalibur";
+// } else {
+//     weapon = "Longsword";
+// }
+
+// to rewrite this
+var weapon = isArthur ? "Excalibur" : "Longsword";
+console.log("Current weapon is: " + weapon);
+
+// or we can even use it as an expression
+console.log("Current weapon is: " + (isArthur ? "Excalibur" : "Longsword"));
+
+console.log("Cureent weapon is " + (isArthur && isKing ? "Excalibur" : "Longsword"));
+
+
+// We can expand this
+
+isArthur && isKing ? console.log("Hail Arthur, King of the Britons!") : console.log("Charge on, ye Knight, for the glory of the King!");
+
+// we can add IIFE
+isArthur && isKing ? function() {
+                        console.log("Hail Arthur, King of the Britons!");
+                        console.log("Current weapon: Excalibur.");
+                    }()
+                    :
+                    function() {
+                        console.log("Charge on, ye Knight, for the glory of the King!");
+                        console.log("Current weapon: Longsword");
+                    }();
+
+// multiple actions in ternaries
+isArthur && isKing ? (weapon = "Excalibur", helmet = "Goosewhite")
+                    :
+                    (weapon = "Longsword", helmet = "Iron Helm");
+
+console.log("Current weapon: " + weapon + "\nCurrent helmet: " + helmet);
+
+
+// going crazy here!
+isArthur && isKing ? (weapon = "Excalibur", helmet = "Goosewhite")
+                    :
+                    isArcher ? (weapon = "Longbow", helmet = "Mail Helm")
+                             : (weapon = "Longsword", helmet = "Iron Helm");
+
+console.log("Current weapon: " + weapon + "\nCurrent helmet: " + helmet);
+
+
+</script>
+</body>
+</html>
