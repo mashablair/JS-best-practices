@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Switch blocks and Fall-throughs</title>
+</head>
+<body>
+
+<h1>JS has an alternate way of taking action based on actual values, not just Booleans.</h1>
+
+<script>
+
+function Knight (name, regimen) {
+    this.name = name;
+    this.regimen = regimen;
+
+    if (regimen == 1) {
+        this.weapon = "Sword";
+    } else if (regimen == 2) {
+        this.weapon = "Claymore";
+    } else if (regimen == 3) {
+        this.weapon = "Longsword";
+    } else if (regimen == 4) {
+        this.weapon = "Mace";
+    } else if (regimen == 5) {
+        this.weapon = "War Hammer";
+    } else if (regimen == 6) {
+        this.weapon = "Battle Axe";
+    } else if (regimen == 7) {
+        this.weapon = "Katana";
+    } else if (regimen == 8) {
+        this.weapon = "Excaliber";
+    }
+}
+
+// this is too long.  JS has an alternative way
+var soldier = new Knight('Sophie', 7);
+
+// let's rewrite our Knight using switch keyword
+function Knight2 (name, regimen) {
+    this.name = name;
+    this.regimen = regimen;
+    // switch signals to take unique action based on value of regimen
+    switch (regimen) {
+        case 1: this.weapon = 'Sword';
+                break;
+        case 2: this.weapon = 'Claymore';
+                break;
+        case 5: this.weapon = 'War Hammer';
+                break;
+        case 6: this.weapon = 'Battle Axe';
+                break;
+        // here cases 3,7,8 all get Katana
+        case 3:
+        case 7:
+        case 8: this.weapon = 'Katana';
+                break;
+        case "King": this.weapon = 'Excaliber';
+                    break;
+        default: console.log(name + " has an incorrect regiment, Master Armourer!\nNo weapon assigned!");
+    }
+}
+
+// we have to insert 'break' after each case to ensure that only one action is taken
+
+var superSoldier = new Knight2('Ninja', 7);
+console.log(superSoldier.weapon); // --> Katana
+
+// what if we use regimen that's not defined yet?
+var king = new Knight2('Arthur', 'King');
+console.log(king.weapon); // --> undefined
+
+// unless we create a custom case! 'case' accepts strings and other values
+console.log(king.weapon); // --> Excaliber
+
+
+// what if we have an unavailable value for regimen?  Let's create a default case
+// added 'default' keyword in the end
+var confusedSoldier = new Knight2 ('Elijah', 15);
+console.log(confusedSoldier.weapon);
+
+
+// Fall-through allows hierarchical code execution
+// so the first case will get ALL values for every case
+
+function ceremonialDagger(knight, rank) {
+    this.length = 8;
+    this.owner = knight;
+    switch(rank) {
+        case 'King': this.diamonds = 1;
+        case 'High Constable': this.amethyst = 2;
+        case 'Field Marshal': this.sapphires = 4;
+        case 'Captain': this.emeralds = 1;
+        case 'Knight': this.rubies = 6;
+
+        default: console.log("Yo, what's your rank, dude?");
+    }
+}
+
+var lostKnightDagger = new ceremonialDagger('Elijah', 'Soldier');
+console.log(lostKnightDagger);
+
+var knightDagger = new ceremonialDagger('Jerome', 'Knight');
+console.log(knightDagger); // --> object has rubies: 6
+
+var kingDagger = new ceremonialDagger('Arthur', 'King');
+console.log(kingDagger); // --> he got all gems!
+
+// fall-through makes this happen
+
+
+// EXERCISES!
+function aiedrasMutterings(lampsLit) {
+  var aiedrasWords;
+  switch (lampsLit) {
+    case 1: aiedrasWords = 'Darkness, there is so much darkness still shrouding the land.';
+    case 2: aiedrasWords = 'A beacon of hope, these two lamps are, but two more still await.';
+    case 3: aiedrasWords = 'Nearly it is complete, twilight breaking, is that a song I hear?';
+    case 4: aiedrasWords = 'It is done, a new age has begun, a new dawn has risen.';
+    default: aiedrasWords = 'Shall we live in Infinite Midnight always?'
+  }
+  return aiedrasWords;
+}
+
+console.log(aiedrasMutterings(0)); // --> She said none of these! ('undefined')
+
+// but if we add 'default', it will work
+
+// another case -- will it work?
+console.log(aiedrasMutterings(3)); // --> 'Shall we live in Infinite Midnight always?'
+// Why?? B/c we forgot to put in 'brake'
+
+
+
+// 2
+// don't forget to use exact strings instead of case numbers
+function sansTemple(direction) {
+  var happensNext;
+  switch(direction) {
+    case 'right hallway': happensNext = 'You find a door, it is locked. You head back from where you came.';
+            break;
+    case 'left hallway': happensNext = 'You find a door, it is locked. You head back from where you came.';
+            break;
+    case 'forward hallway': happensNext = 'You find a door, it is locked. You head back from where you came.';
+            break;
+    case 'lower tunnel': happensNext = 'You find a door, it is locked. You head back from where you came.';
+            break;
+    case 'hidden door': happensNext = 'You go through the door into a room. A small, very dark room, that smells of dust and sulfur...';
+            break;
+    default: happensNext = 'You stand there, gaping, not moving. Aiedra wonders, are you alive?';
+  }
+  return happensNext;
+}
+console.log(sansTemple('forward hallway'));
+
+
+
+
+
+// since the cases 1-4 have the same outcome, we can rewrite our sansTemple function removing the breaks:
+function sansTemple(direction) {
+  var happensNext;
+  switch(direction) {
+    case 'right hallway':
+    case 'left hallway':
+    case 'forward hallway':
+    case 'lower tunnel': happensNext = 'You find a door, it is locked. You head back from where you came.';
+            break;
+    case 'hidden door': happensNext = 'You go through the door into a room. A small, very dark room, that smells of dust and sulfur...';
+            break;
+    default: happensNext = 'You stand there, gaping, not moving. Aiedra wonders, are you alive?';
+  }
+  return happensNext;
+}
+console.log(sansTemple('forward hallway'));
+
+
+// Exercise: using fall-through switch blocks in constructors
+function CaretakerMedallion(caretaker) {
+  this.owner = caretaker;
+  switch(caretaker) {
+      case 'PixelPriest': this.bronzeBanner = 'Omne initium est a pixel';
+      case 'FontFriar': this.circumscribedSquare = 'Venit Comic Sans';
+      case 'StyleSensei': this.innerRing = 'Ars autem est in aeternum';
+  }
+}
+
+// Example uses of our CaretakerMedallion function
+// Note the properties for each example
+
+var medallion1 = new CaretakerMedallion('PixelPriest');
+/*
+  CaretakerMedallion {
+    bronzeBanner: 'Omne initium est a pixel',
+    circumscribedSquare: 'Venit Comic Sans',
+    innerRing: 'Ars autem est in aeternum'
+  }
+*/
+
+var medallion2 = new CaretakerMedallion('StyleSensei');
+
+
+
+
+
+</script>
+
+</body>
+</html>

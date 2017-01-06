@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loop Optimization</title>
+</head>
+<body>
+
+<h1>Loops can be improved to enhance memory access</h1>
+
+<script>
+
+var treasureChest = {
+    goldCoins: 10000,
+    magicalItem: "Crown of Speed",
+    necklaces: [ 'ruby', 'pearl', 'sapphire', 'diamond' ],
+
+    openLid: function() {
+        console.log('Creeeeeeek!');
+    }
+};
+
+// our normal for-loop structure
+console.log("You've found the following necklaces:");
+for (var i = 0; i<treasureChest.necklaces.length; i++) {
+    console.log(treasureChest.necklaces[i]);
+}
+
+// how can we improve our loop for efficiency and speed?
+// we can use 'cached values' to avoid lengthy repetetive process of same data
+console.log("You've found the following necklaces:");
+// let's create x
+var x = treasureChest.necklaces.length;
+for (var i = 0; i<x; i++) {
+    console.log(treasureChest.necklaces[i]);
+}
+
+
+// we can improve this loop even further
+console.log("You've found the following necklaces:");
+var list = treasureChest.necklaces;
+// processor knows that these vars are only used inside loop
+for (var i = 0, x = treasureChest.necklaces.length; i<x; i++) {
+    console.log(list[i]);
+}
+
+
+
+// INTERESTING
+// if we use for-in loop, it will return ALL array properties, including all custom prototype properties we could have added
+
+Array.prototype.removeAll = function(item) {
+    var removed = [];
+    for (var i = 0, x = this.length; i<x; i++) {
+        if (this[i] === item) {
+            removed.push(item);
+            this.splice(i, 1);
+        }
+    }
+    return removed;
+};
+
+Array.prototype.countType = function(type) {
+    var count = 0;
+    for (var i = 0, x = this.length; i<x; i++) {
+        if (this[i] === type) {
+            count++;
+        }
+    }
+    return count;
+};
+
+console.log("You've found the following necklaces:");
+var list = treasureChest.necklaces;
+// for every property in the list
+for (p in list) {
+    console.log(list[p]); // -->
+}
+
+// --> ruby, pearl, sapphire, diamond, function(item){..}, function(type) {...}
+
+
+</script>
+
+</body>
+</html>

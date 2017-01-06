@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logical Assignment II</title>
+</head>
+<body>
+
+<p>When all elements are 'truthy', && will return the LAST "truthy" value found</p>
+
+
+<script>
+
+// when both are 'truthy', the LAST truthy gets returned
+
+var result1 = 'Sophie' && 'Ninja'; // --> 'Ninja'
+console.log(result1);
+
+
+// when both 'falsy', the FIRST falsy gets returned
+var result2 = 0 && undefined;
+console.log(result2);
+
+
+// Useful
+var armory = {
+    swords: ["Katana", "Supersword", "Excaliber", "Claymore"],
+};
+
+armory.retrieveSword = function(request) {
+    return (this.swords.indexOf(request) >= 0) ? this.swords.splice(this.swords.indexOf(request), 1)[0]
+        :
+        "Not here!";
+};
+
+// var pickMe = armory.retrieveSword('Katana');
+// console.log(pickMe); // --> Katana
+
+// let's make it intresting
+var isKnight = true;
+var weapon = isKnight && armory.retrieveSword('Katana');
+// both are truthy, so the LAST truthy will be returned --> Katana
+
+console.log(weapon);
+
+
+// Logical assignments are extendable
+var armoryIsOpen = true;
+var isKnight = true;
+var weapon = armoryIsOpen && isKnight && armory.retrieveSword('Excaliber');
+// the last truthy value is returned - what we want
+console.log(weapon); // --> Excaliber
+
+
+// now the armory is closed
+var armoryIsOpen = false;
+var weapon = armoryIsOpen && isKnight && armory.retrieveSword('Excaliber'); // --> false
+// the 1st conditional is false, so it gets returned, and nothing else get evaluated
+console.log(weapon); // --> false
+
+
+
+// NOW SOME EXERCISES
+// 1.
+var aiedraIsConvincing = true;
+var dhuunIsCurious = true;
+
+var beginJourney = aiedraIsConvincing && dhuunIsCurious;
+console.log(beginJourney); // --> true
+
+
+// 2.
+var strength = true;
+var fear = false;
+
+var surviveThisTrial = strength && !fear; // --> true
+
+
+// 3.
+var strength = true;
+var fear = false;
+var pack = {
+  food: [ 'carrot',
+          'mystery meat',
+          'apple',
+          'crust of bread',
+          'spicy dried sausage',
+          'carrot',
+          'wedge of sharp cheese',
+          'jug of milk',
+          'mystery meat',
+          'carrot'
+  ],
+  addFood: function(foodItem) {
+    this.food = this.food || [];
+    this.food.push(foodItem);
+  },
+  enoughFood: function(amount) {
+    return(this.food.length >= amount);
+  }
+};
+
+var surviveThisTrial = strength && !fear && pack.enoughFood(10);
+console.log(surviveThisTrial); // --> true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

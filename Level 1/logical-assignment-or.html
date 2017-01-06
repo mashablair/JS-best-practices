@@ -17,10 +17,63 @@ var armory = {
 
 // if this property doesn't exist, it will be created as an empty array, and then assigned to a newly created swords property
 
-// and then it will add sword to our array
+// and then it will add new sword to our armory.swords array
 
 armory.addSword("Longsword");
 console.log(armory);
+
+
+
+// So we can redo this code using the logical operator:
+
+var armory = {
+    addSword: function(sword) {
+        // if 'this.swords' doesn't exist yet, it will be 'undefined' which is falsy, so the empty array will be created
+        this.swords = this.swords || [ ];
+        // but if 'this.swords' already exists, it will --> true (and be the first truthy)
+        // then, regardless, our sword will be added to the swords array
+        this.swords.push(sword);
+    }
+};
+
+armory.addSword("Excaliber");
+console.log(armory);
+
+armory.addSword("Super Sword");
+console.log(armory);
+
+// IMPORTANT!!
+//
+// With || operator, not both arguments get evaluated.  No, the first truthy one is evaluated.  As soon as it finds the truthy value, it executs the code.
+
+console.log(armory.swords);
+
+
+// The order of conditional arguments is important.  If we put [ ] first, it will evaluate to 'truthy' and it will be accepted, before even looking at 'this.swords'.  So every time we will call armory.addSword, new [ ] will be created, overriding the previouly added swords. :(
+
+// So, when constructing logical assignments, make sure that default cases don't override our desired cases or existing work:
+
+var result = undefined || 4; // --> 4
+console.log(result);
+var result1 = 0 || ['Sophie', 'Ninja']; // --> array
+console.log(result1);
+var result2 = "" || { name: 'Sophie'}; // --> object
+console.log(result2);
+
+// above, these logical assignments still accept the first truthy values found
+
+// IMPORTANT!
+// if both values are falsy, the LAST falsy value will be used
+var result3 = undefined || ""; // --> ""
+var result4 = "" || undefined; // --> undefined
+
+// interesting case:
+var lost;
+var darkness = true;
+
+lost = undefined || darkness;
+// what's the value of lost?
+// The answer is 'true'
 
 </script>
 
