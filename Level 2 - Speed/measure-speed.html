@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Measuring Performance I</title>
+</head>
+<body>
+
+<h1>Let's write some code and test it</h1>
+
+<script>
+
+function Knight (name, regiment) {
+    this.name = name;
+    this.regiment = regiment;
+    switch (regiment) {
+        case 1: this.weapon = "Sword";
+            break;
+        case 2: this.weapon = "Claymore";
+            break;
+        case 3: this.weapon = "Longsword";
+            break;
+        case 4: this.weapon = "War Hammer";
+            break;
+        case 5: this.weapon = "Katana";
+            break;
+        case 6:
+        case 7:
+        case 8: this.weapon = "Morning Star";
+            break;
+        case "King": this.weapon = "Excaliber";
+            break;
+        default: console.log("Who the heck are you, " + name + "?");
+    }
+}
+
+
+
+var newbies = [ "Grimble", "Jark", "Bunder" ];
+var firstRegimentKnights = [
+    {name: "John", lastname: "Slade"},
+    {name: "Sophie", lastname: "Blair"},
+    {name: "Masha", lastname: "Blair"},
+    {name: "Elijah", lastname: "Blair"},
+    {name: "Nina", lastname: "Kataria"},
+    {name: "Ale", lastname: "Goycochea"}
+];
+
+
+// let's use console to keep track of time
+
+// // Test1
+// // timer starts
+// console.time("Time to add " + newbies.length + " Knights");
+// for (var i=0, x=newbies.length; i<x; i++) {
+//     var newGuy = new Knight(newbies[i], 1);
+//     firstRegimentKnights.push(newGuy);
+// }
+// // timer ends
+// console.timeEnd("Time to add " + newbies.length + " Knights"); // --> 0.299 ms
+
+
+// // test 2
+// // timer starts
+// console.time("Time to add " + newbies.length + " Knights");
+// for (var i=0, x=newbies.length; i<x; i++) {
+//     // here we eliminate declaring that extra var
+//     firstRegimentKnights.push(new Knight(newbies[i], 1));
+// }
+// // timer ends
+// console.timeEnd("Time to add " + newbies.length + " Knights"); // --> 0.282 ms
+// // so this time is slightly better
+
+
+
+
+
+
+// let's create 2nd newbies crowd
+var newbiesSecond = [ "Jenna", "Tar", "Cromer", "Stim", "Vorn", "Rack", "Bruck" ];
+var secondRegimentKnights = [
+    {name: "John", lastname: "Slade"},
+    {name: "Sophie", lastname: "Blair"},
+    {name: "Masha", lastname: "Blair"},
+    {name: "Elijah", lastname: "Blair"},
+    {name: "Nina", lastname: "Kataria"},
+    {name: "Ale", lastname: "Goycochea"}
+];
+
+
+// big timer
+console.time("Total completion time");
+// first small timer
+console.time("Time to add " + newbies.length + " Knights");
+for (var i=0, x=newbies.length; i<x; i++) {
+    // here we eliminate declaring that extra var
+    firstRegimentKnights.push(new Knight(newbies[i], 1));
+}
+// timer ends
+console.timeEnd("Time to add " + newbies.length + " Knights");
+
+// 2nd timer
+console.time("Time to add " + newbiesSecond.length + " Knights");
+for (var i=0, x=newbiesSecond.length; i<x; i++) {
+    // here we eliminate declaring that extra var
+    secondRegimentKnights.push(new Knight(newbiesSecond[i], 1));
+}
+// end 2nd timer
+console.timeEnd("Time to add " + newbiesSecond.length + " Knights");
+
+// end of big timer
+console.timeEnd("Total completion time");
+
+// If we want more accurace in our estimate, we need to use the average of multiple tests\
+
+console.log(firstRegimentKnights);
+
+
+
+
+
+
+
+// EXERCISES:
+// 1.
+var array = ['Inverted Peninsula', ',', 'Inverted Peninsula', ', ', 'I', '—', 'P', '...', 'hmmm', '.'];
+var internalThoughts = '';
+
+console.time('test for ' + array.join());
+internalThoughts = array.join(' ');
+console.timeEnd('test for ' + array.join());
+
+console.log(internalThoughts);
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

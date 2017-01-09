@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Script Execution</title>
+</head>
+<body>
+<h1>Script placement impacts performance</h1>
+
+<!-- <script src="http://www.RegimentSparring.com/sparring.js" async></script> -->
+
+<h2>Short Performance Tips</h2>
+
+<ul id="knightsList"></ul>
+
+<script>
+
+// scripts in the <head> or <body> can have negative impact on loading and performance if they're not absolutely necessary.
+
+// what can we do?
+
+// 1. place <script> in the end of the <body> OR
+
+// 2. put 'async' attribude inside the <script> tag
+
+
+// Adding individual DOM element isn't always speedy
+var list = document.getElementById('knightsList');
+var knights = [ 'Jenna', 'Neric', 'Darkin' ];
+
+for (var i=0, x = knights.length; i<x; i++) {
+    var element = document.createElement('li');
+    element.appendChild( document.createTextNode(knights[i]) );
+    list.appendChild(element);
+}
+
+
+
+
+// How can we improve this?
+// Use a document FRAGMENT to insert additions all at once
+
+var list = document.getElementById('knightsList');
+var knights = [ 'Jenna', 'Neric', 'Darkin' ];
+// this is new method
+// it creates a STAGING area to hold all our new <li> elements
+var fragment = document.createDocumentFragment();
+
+for (var i=0, x = knights.length; i<x; i++) {
+    var element = document.createElement('li');
+    element.appendChild( document.createTextNode(knights[i]) );
+    fragment.appendChild(element); // appends all our <li> to the fragment
+}
+// and here we finally append all our new text nodes in 1 swoop, only 1 DOM tough!
+list.appendChild(fragment);
+
+
+
+// Another tip: ALTERNATE SYNTAX for declaring vars
+// Declare variables as few times as possible
+// Every var keyword adds a look-up for the JS parser that can be avoided with comma extensions
+
+var list = document.getElementById('knightsList'),
+    knights = [ 'Jenna', 'Neric', 'Darkin' ],
+// this is new method
+// it creates a STAGING area to hold all our new <li> elements
+    fragment = document.createDocumentFragment();
+
+// remember to use commas after each new initial declaration!
+
+
+
+
+// Another tip: try not to declare vars in loops
+// it will create processor burden by creating a new var over and over again
+// we declare and initialize our 'element' var outside the loop
+var list = document.getElementById('knightsList'),
+    knights = [ 'Jenna', 'Neric', 'Darkin' ],
+// this is new method
+// it creates a STAGING area to hold all our new <li> elements
+    fragment = document.createDocumentFragment(),
+    element;
+
+for (var i=0, x = knights.length; i<x; i++) {
+    element = document.createElement('li');
+    element.appendChild( document.createTextNode(knights[i]) );
+    fragment.appendChild(element); // appends all our <li> to the fragment
+}
+// and here we finally append all our new text nodes in 1 swoop, only 1 DOM tough!
+list.appendChild(fragment);
+
+
+
+// Another tip: Efficient choices for string concatenation
+// In terms of execution speed, there are different methods of building strings that result in different results
+
+var knight = "Jenna";
+var action = " strikes the dragon with a ";
+var weapon = "Katana";
+
+
+// this is a standard concatenation operator has been optimized in most modern browsers, and is an ideal choice for a SMALL number of string concatenations
+
+var turn = "";
+turn += knight;
+turn += action;
+turn += weapon;
+
+// BUT
+// Let's say we are building the page and concatenating 100s of elements
+var newPageBuild = [ "<!DOCTYPE html>", "<html>", "<body>", "<h1>", "<script>", "</body>", "</html>"];
+
+var page = "";
+// it's best to use a loop
+for (var i = 0, x = newPageBuild.length; i < x; i++) {
+    page += newPageBuild[i];
+}
+
+
+// THERE IS A BETTER WAY!  FASTER WAY!
+// For concatenation over array's content, use the join() method inherited from the Array prototype
+var page = newPageBuild.join("\n");
+console.log(page);
+
+
+
+</script>
+</body>
+</html>
