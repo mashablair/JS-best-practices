@@ -6,5 +6,176 @@
 </head>
 <body>
 
+<h1>Retrieving and Using Numerical Time Data</h1>
+
+<script>
+// to accurately generate numerical data we can manipulate, we'll first examine the JS Date object
+
+var rightNow = new Date();
+console.log(rightNow);
+
+// placing a + unary operator in front of our Date object variable asks for the specific value in milliseconds.
+
+console.log(+rightNow); // --> 1483988081327
+
+// it's like doing this:
+console.log(new Number (rightNow)); // --> Number {[[PrimitiveValue]]: 1483988149328}
+
+
+
+
+
+
+
+// Since we know we want an actual number, we can go ahead and assign the variable to be the numerical version of our new Date Object
+var rightNow = +new Date();
+
+// then we create the new var for a later moment and get a new millisecond value
+var endTime = +new Date();
+
+// and then we use it
+var elapsedTime = endTime - rightNow;
+console.log(elapsedTime);
+
+// We'll use our Date object approach to calculate a more accurate performance over many code repetitions
+
+
+function SpeedTest(testImplement, testParams, repetitions) {
+    this.testImplement = testImplement;
+    this.testParams = testParams;
+    this.repetitions = repetitions || 10000;
+    this.average = 0;
+}
+
+// testImplement is a specific code that we want to test for performance spped
+
+// we make 'repetitions' parameter optional by defaulting it to 10,000 executions, using our logical.
+
+SpeedTest.prototype = {
+    startTest: function() {
+        var beginTime, endTime, sumTime = 0;
+        // and best practice for loop: no repetetive property access
+        for (var i = 0, x = this.repetitions; i<x; i++) {
+            beginTime = +new Date();
+            // and here is the actual test
+            this.testImplement( this.testParams );
+
+            endTime = +new Date();
+            sumTime += endTime - beginTime;
+        }
+        this.average = sumTime / this.repetitions;
+        return console.log('Average execution across ' + this.repetitions + ": " + this.average);
+    }
+};
+
+
+// let's test some bad data
+function Knight (name, regiment) {
+    this.name = name;
+    this.regiment = regiment;
+    switch (regiment) {
+        case 1: this.weapon = "Bright Sword";
+            break;
+        case 2: this.weapon = "Claymore";
+            break;
+        case 3: this.weapon = "Longsword";
+            break;
+        case 4: this.weapon = "War Hammer";
+            break;
+        case 5: this.weapon = "Katana";
+            break;
+        case 6:
+        case 7:
+        case 8: this.weapon = "Morning Star";
+            break;
+        case "King": this.weapon = "Excaliber";
+            break;
+        default: console.log("Who the heck are you, " + name + "?");
+    }
+}
+
+var newbies = [ "Grimble Blair", "Jark Kataria", "Bunder Parker" ];
+var firstRegimentKnights = [
+    {name: "John Slade", weapon: "Bright Sword"},
+    {name: "Sophie Blair", weapon: "Bright Sword"},
+    {name: "Masha Blair", weapon: "Bright Sword"},
+    {name: "Elijah Blair", weapon: "Bright Sword"},
+    {name: "Nina Kataria", weapon: "Bright Sword"},
+    {name: "Ale Goycochea", weapon: "Bright Sword"}
+];
+var listsForTests = [newbies, firstRegimentKnights];
+
+
+// testing time!
+// if we wrap the code in its own function expression and assign it to a variable, we can easily pass it around as a 'set' of code to be tested
+var noBP = function(listOfParams) {
+    // here we use the loop w/o best practices
+    for (var i = 0; i<listOfParams[0].length; i++) {
+        var newGuy = new Knight(listOfParams[0][i], 1);
+        listOfParams[1].push(newGuy);
+    }
+};
+
+var noBPTest = new SpeedTest(noBP, listsForTests);
+
+noBPTest.startTest();
+
+
+
+// And now let's improve our loop!
+var betterPractices = function(listOfParams) {
+    // here we use the loop with best practices
+    for (var i = 0, x = listOfParams[0].length; i<x; i++) {
+        listOfParams[1].push(new Knight(listOfParams[0][i], 1));
+    }
+};
+
+var betterPracticesTest = new SpeedTest(noBP, listsForTests);
+betterPracticesTest.startTest(); // calling the method
+
+
+
+
+
+// ANOTHER TEST EXERCISE -- SAME TEST, DIFFERENT DATA
+var IP = ['Nipping Global Variable', 'Sneaky Forin', 'Bulging Blocking Script'],
+GH = ['Switch Blocks', 'Pesky Gnat', 'Aiedra'],
+inhabitants = [IP,GH];
+
+function populationGetterConcat(popn) {
+  var list = '';
+  for (var i = 0, x = popn.length; i < x; i++) {
+    for (var j = 0; j < popn[i].length; j++) {
+      list += (popn[i][j] + ', ');
+    }
+  }
+  return list;
+}
+
+populationGetterConcat(inhabitants);
+
+
+function populationGetterJoin(popn) {
+  var list = [];
+  for (var i = 0, x = popn.length; i < x; i++) {
+    list.push(popn[i].join(', '));
+  }
+  return list.join(', ');
+}
+
+populationGetterJoin(inhabitants);
+
+
+
+var concatTest = new SpeedTest(populationGetterConcat, inhabitants, 100000);
+concatTest.startTest();
+
+var joinTest = new SpeedTest(populationGetterJoin, inhabitants);
+joinTest.startTest();
+
+
+
+</script>
+
 </body>
 </html>
