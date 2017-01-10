@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exceptions Handling</title>
+</head>
+<body>
+
+<h1>Exceptions are Run-Time Errors</h1>
+
+<script>
+
+// Syntax error vs. Run-time error
+// syntax error will NOT make it past the interpreter
+
+// this line will stop all code
+// console.log(alarm);
+
+// this line will NOT stop the further code, but will display error
+try {
+    console.log(alarm);
+} catch (error) {
+    console.log("Uh oh \n" + error);
+}
+
+console.log('Hello, World!');
+
+// JS has many useful 'error' types that allows a catch block to handle them better
+
+
+try {
+    var newHallOfFame = [ "Angelina", "Brad"];
+    if (list === undefined) {
+        throw new ReferenceError();
+    }
+    if((list instanceof Array) === false) {
+        throw new TypeError();
+    }
+
+    list.concat(newHallOfFame);
+} catch (error) {
+    if (error instanceof ReferenceError) {
+        console.log (error + "\n" + "The Hall of Fame roster doesn't exist. Check for relocation in master document.");
+    }
+    if (error instanceof TypeError) {
+        console.log(error + "\n" + "The \"list\" exists, but is no longer an Array. Check for an overwrite.");
+    }
+}
+
+
+finally {
+    console.log(list);
+}
+// this block will execute whether try met with success or failure.  Now we'll know exactly what list contained at the end of the operation, if anything.
+
+
+</script>
+
+</body>
+</html>
