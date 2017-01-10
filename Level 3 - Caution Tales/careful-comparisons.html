@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Careful Comparisons - Triple Equals</title>
+</head>
+<body>
+
+<script>
+
+// in CS, 'false' == 0 and 'true' == 1
+// but false !=== 0 and true !=== 1
+
+// true and false evaluate to 1 and 0
+
+"\n \n \t" == 0 // --> true!
+
+
+
+function countEntries(KnightResponses, value) {
+    var count = 0,
+        x = KnightResponses.length;
+
+    for (var i = 0; i<x; i++) {
+        if(KnightResponses[i] === value) {
+            count++;
+        }
+    }
+    return count;
+}
+
+var fields = ["Jason Millhouse", "1", "12", true, true, false];
+var numCompletedTasks = countEntries(fields, true);
+console.log(numCompletedTasks); // if not-strict comparison, the outcome is 3 (wrong) b/c "1" == true
+
+
+
+
+
+
+// INSTANCEOF
+// What if we need to verify the object's prototype
+function LeatherArmor (bodyStyle, numBuckles, numSpaulders) {
+    this.bodyStyle = bodyStyle;
+    this.numBuckles = numBuckles;
+    this.numSpaulders = numSpaulders;
+}
+
+function ChainMail (metal, hasHood, skirtLength) {
+    this.metal = metal;
+    this.hasHood = hasHood;
+    this.skirtLength = skirtLength;
+}
+
+function Knight (name, regiment) {
+    this.name = name;
+    this.regiment = regiment;
+    switch (regiment) {
+        case 1: this.weapon = "Sword";
+            break;
+        case 2: this.weapon = "Claymore";
+            break;
+        case 3: this.weapon = "Longsword";
+            break;
+        case 4: this.weapon = "War Hammer";
+            break;
+        case 5: this.weapon = "Katana";
+            break;
+        case 6:
+        case 7:
+        case 8: this.weapon = "Morning Star";
+            break;
+        case "King": this.weapon = "Excaliber";
+            break;
+        default: console.log("Who the heck are you, " + name + "?");
+    }
+}
+
+
+var leather1 = new LeatherArmor("Sleek Leather", 5, 10);
+var leather2 = new LeatherArmor("Fancy Leather", 5, 15);
+var chain1 = new ChainMail("gold", true, 10);
+var chain2 = new ChainMail("silver", true, 15);
+var sophie = new Knight("Sophie", 5);
+var elijah = new Knight("Elijah", 2);
+var masha = new Knight("Masha", 6);
+
+var armorList = [ leather1, leather2, chain1, chain2 ];
+var newbies = [ sophie, elijah, masha ];
+
+function assignKnightsArmor(knights, armorAvailable) {
+    var x = knights.length,
+        y = armorAvailable.length;
+
+    // DOUBLE LOOP!
+    for (var i = 0; i<x; i++) {
+        for (var j = 0; j<y; j++) {
+            if (armorAvailable[j] instanceof ChainMail) {
+                knights[i].armor = armorAvailable.splice(j, 1)[0];
+                console.log(knights[i]);
+                y--;
+                break;
+            }
+        }
+    }
+}
+
+assignKnightsArmor(newbies, armorList);
+console.log(armorList);
+
+
+
+
+// INSTANCEOF
+// Also use instanceof to check the entire inheritance chain
+// An object is an 'instance' of all the prototypes from which it inherits properties
+
+
+// let's add prototype
+function Armor(location) {
+    this.location = location;
+}
+
+Armor.prototype = {
+    putOn: function() {
+        console.log("Your armor is on!");
+    }
+};
+
+// this make Armor.prototype a parent prototype of our leather and chain armors
+LeatherArmor.prototype = Object.create(Armor.prototype);
+ChainMail.prototype = Object.create(Armor.prototype);
+
+var kingsArmor = new ChainMail("gold", true, 36);
+console.log(kingsArmor instanceof Armor); // --> true
+
+
+
+// EXERCISES
+
+var nearbyFood = [true, false, 1, 0, '1', '0'];
+
+function eatBoolean(food) {
+    for (var i = 0, x = food.length; i<x; i++) {
+        if (food[i] === true || food[i] === false) {
+            console.log('Yum! Chirp!');
+        }
+    }
+}
+
+eatBoolean(nearbyFood);
+
+</script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
