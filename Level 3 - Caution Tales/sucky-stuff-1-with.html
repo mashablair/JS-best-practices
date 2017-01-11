@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stuff that sucks sometimes</title>
+</head>
+<body>
+
+<h1>No. 1: JS keyword 'with' is unreliable and often expensive, so it's generally avoided</h1>
+
+<script>
+
+// No. 1:  Don't use 'with'
+// 'with' tries and limits redundancy, but makes uncertain scope
+// Best practice: Use variables to cache your objects
+// caching values 1) avoid lots of typing 2) very clear in indication
+
+var castle = {
+    soliders: 8473,
+    capacity: 3937772,
+    keep: {
+        soliders: 19,
+        capacity: 40,
+        drawbridge: {
+            soldiers: 3,
+            capacity: 5,
+            open: function() {}
+        }
+    }
+};
+
+
+// with cached clarity (var o), team can understand code's functionality. Also no lengthy object names!
+var reinforcement = 12;
+var o = castle.keep.drawbridge;
+if (o.capacity >= o.soliders + reinforcement) {
+    o.open();
+    o.soliders += reinforcement;
+    console.log("Drawbride soliers: " + o.soliders);
+} else {
+    console.log("Reinforcement will require split unit.");
+}
+
+
+// No. 2:  eval
+// keyword 'eval' might affect legibility, ability to debug and performance
+
+var regiments = [
+    {name: "Bill", lastname: "Ford"},
+    {name: "Sophie", lastname: "Blair"}
+];
+
+function assignRegimentsMotto(number, motto) {
+    eval("regiments[" + number + "]").motto = motto;
+}
+
+// eval method takes a string as a parameter and start JS compiler, and treat it as if it were a line of code to execute
+
+// assignRegimentsMotto(1, "The King's Own"); // --> regiment1.moto = 'The King's Own' --> syntax error
+
+assignRegimentsMotto(0, "Hey world!"); // --> Bill's motto is updated!
+console.log(regiments[0].motto); // --> 'Hey world!'
+
+// here the result code is invalid b/c of extra apostrophe, which makes the compiler think the string is complete...until it sees more stuff ---> marks code as invalid JS
+
+// Best practice:  Just use arrays for mapping numbers to objects:
+
+
+function assignRegimentsMotto2(number, motto) {
+    regiments[number].motto = motto;
+}
+
+// above we just use the associative nature of arrays to build any dynamic mapping.  Referencing array is much fatser than parsing and running a new mini-program
+
+assignRegimentsMotto2(1, "We are the best!"); // --> Sophie's motto is updated!
+console.log(regiments); // both objects in this array are updated with the new property 'motto'
+
+
+// But what if I need to read and write stringy JSON data?
+// Using 'eval' to parse JSON data is often unsafe, b/c 'eval' evaluates any script
+
+// Best practice here is to use JSON.parse() to ensure only JSON is accepted
+
+var regimentJSON = '{' +
+    '"regiment1": { "motto": "The King\'s Own",' + '"numMembers": 46},' +
+    '"regiment2": { "motto": "The Best of the Best",' + '"numMembers": 30}' +
+'}';
+
+var regiments2 = JSON.parse(regimentJSON);
+console.log(regiments2); // --> 2 nice objects
+
+
+
+
+
+// No. 3:  Leaving off { }
+// like this
+var isKing = true;
+if (isKing)
+    weapon = "Excalibur";
+else
+    weapon = "Sword";
+
+// adding more statements nore statements to this code above will prodice error!
+
+
+
+// EXERCISES
+// instead of using 'with':
+// Pack of goods
+var pack = {
+  foodPouch: ['carrot', 'mystery meat', 'apple', 42],
+
+  // Place in pack to keep your fire starting goods
+  fireKit: {
+    matchTin: {
+      matches: 4,
+      sparkPaper: 6
+    }
+  }
+};
+
+var matches = 3;
+function lightCampFire() {
+    var tin = pack.fireKit.matchTin;
+    tin.matches--;
+    tin.sparkPaper--;
+}
+
+
+
+</script>
+
+
+
+</body>
+</html>

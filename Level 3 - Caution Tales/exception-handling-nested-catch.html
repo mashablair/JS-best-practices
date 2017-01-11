@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exception Handling Part 2</title>
+</head>
+<body>
+
+<h1>What if we want more than 1 option?</h1>
+
+<h2>Some sample header</h2>
+<p>Here is the age of some person: Masha Blair -- </p>
+<p id="age">Age: 34</p>
+
+<script>
+
+// if our first choice doesn't work out, try-blocks nested within catch-blocks can organize an option sequence
+
+// 'existing' parameter here is optional, if id isn't found
+function changeInnerHTMLByIdOrExisting (id, update, existing) {
+    try {
+        var newElement = undefined;
+        document.getElementById(id).innerHTML = update;
+    } catch (error) {
+        try {
+            // we might know the existing inner HTML instead of the node's id
+            var elements = document.getElementsByTagName('*');
+            for (var i = 0, x = elements.length; i<x; i++) {
+                if (elements[i].innerHTML === existing) {
+                    element[i].innerHTML = update;
+                    id = elements[i].id;
+                    break;
+                }
+                if (i === x) {
+                    throw new Error("An existing element was NOT found.");
+                }
+            }
+        } catch (error2) {
+        console.log(error2.message + "\nCreating new text node.");
+        newElement = document.createTextNode(update);
+        }
+    // in addition to JS native errors, we can create custom Errors w/ custom message properties
+    }
+    finally {
+        if (newElement !== undefined) {
+            console.log("Returning new text node...");
+            return newElement;
+        } else {
+            // else we'll notify that requested element was updated, using id or 'existing' that we found
+            console.log("Modified element \"" + (id || existing) + "\" with inner HTML \"" + update + ".");
+        }
+    }
+}
+
+changeInnerHTMLByIdOrExisting('age', "Age: 35", "Age: 34");
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
