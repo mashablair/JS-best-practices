@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Number Nonsense</title>
+</head>
+<body>
+
+<form id="zip" value="93101">93101</form>
+
+<script>
+
+console.log(0.1 + 0.2); // --> 0.3000000000000004
+
+// to avoid this, there are few methods to use
+
+// toFixed() method allows to select the number of decimals to display
+var num = 0.1 + 0.2;
+console.log(num.toFixed(1)); // --> 0.3
+
+
+// dealing with money and percentages, toFixed() can handle hundredths rounding
+function tax(price, percent) {
+    return (price*percent/100).toFixed(2);
+}
+
+var finalPrice = tax(9.85, 7.5);
+console.log(finalPrice); // --> "0.74" instead of 0.73875
+// but it's a STRING!!
+console.log(finalPrice + 4); // --> 0.744!!!!
+
+// to fix this we need a combination of toFixed() and parseFloat() --> so we can use the result in further math operations
+
+function tax2(price, percent) {
+    return parseFloat((price*percent/100).toFixed(2));
+}
+
+var glove = 9.85;
+var armorTax = 7.5;
+var total = glove + tax2(glove, armorTax);
+console.log(total); // --> 10.59
+
+
+// parseInt() method is slightly dangerous b/c it seeks the 1st available integer at the front of a string
+console.log(parseInt("88")); // --> 88
+console.log(parseInt("88 keys on a piano")); // --> 88
+console.log(parseInt("There are 88 keys")); // --> NaN !!
+console.log(parseInt("9.85")); // --> 9 !!
+
+// if you're unsure of a browser or JS version, use this
+parseInt("021", 10); // --> 21
+// it's best practice to also pass the radix argument to this method (10)
+
+
+
+
+// Best practice
+// Use double check to make sure you have a number!
+function isThisReallyANumber(data) {
+    return (typeof data === "number" && !isNaN(data));
+}
+
+// don't just realy on one of these conditions as a check
+// use both
+var number = isThisReallyANumber(5);
+console.log(number); // --> true
+
+var number1 = isThisReallyANumber(parseInt("There are 88 keys"));
+console.log(number1); // --> false
+
+isThisReallyANumber(NaN) // --> false (we avoided a problem!)
+
+
+// Here is how to check for a valid zipcode
+function checkValidZip() {
+    var entry = document.getElementById('zip').value;
+    console.log(entry); // --> undefined
+    var userZip = parseInt(entry);
+    console.log(userZip); // --> NaN
+    try {
+        if (isThisReallyANumber(userZip)) {
+            if (userZip.toFixed(0).length === 5) {
+                return true;
+            } else {
+                throw new Error("Nope!");
+            }
+        } else {
+            throw new Error("Nope!");
+        }
+    }
+    catch(e) {
+        if(e.message === "Nope!") {
+            console.log("Please enter a valid zipcode!");
+            return false;
+        }
+    }
+}
+
+checkValidZip(); // for some reason it doesn't work --> Please enter a valid zipcode b/c the value of zip it gets is undefined...
+
+
+
+// EXERCISES
+
+// 1.
+
+var birdFeeder = {
+    totalFeedAvailable: 4,
+    getFeed: function(feedRequested) {
+        var returnedFeed = 0;
+        if (this.totalFeedAvailable >= feedRequested) {
+            returnedFeed = feedRequested;
+            this.totalFeedAvailable -= feedRequested;
+        } else {
+            returnedFeed = this.totalFeedAvailable;
+            this.totalFeedAvailable = 0;
+        }
+        console.log("After feeding birds with " + feedRequested + " feeds, we have " + this.totalFeedAvailable + " feed(s) left");
+
+        // these methods will ensure we get a number (not string) with 1 decimal number
+        return parseFloat(returnedFeed.toFixed(1));
+    },
+    fillFeed: function(additionalFeed) {
+        this.totalFeedAvailable += additionalFeed;
+    }
+};
+
+birdFeeder.getFeed(3);
+
+
+
+// 2.
+var lambString = "57 lazy lambs do bask in the sun.";
+
+var numberOfLambs = parseInt(lambString, 10);
+console.log(numberOfLambs); // --> 57
+
+
+var lambString = "57.99 lazy lambs do bask in the sun.";
+var numberOfLambsBits = parseFloat(lambString);
+console.log(numberOfLambsBits); // --> 57.99
+
+
+</script>
+
+</body>
+</html>
