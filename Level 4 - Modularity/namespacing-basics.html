@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Namespacing Basics</title>
+</head>
+<body>
+
+<p>when many people write JS code, there is overwriting problem -- conflicting global elements.</p>
+
+<h1>The King's Hall of Fame</h1>
+    <h2>Honorable Members</h2>
+    <ul id="roster"></ul>
+
+
+    <h2>Selection Requirements</h2>
+    <ul id="reqs"></ul>
+    <button onclick="displayReqs();">Display Requirements!</button>
+
+
+
+    <h2>List of Awards</h2>
+    <ul id="awards"></ul>
+    <button onclick="AWARDS.displayAwards();">Show Awards!</button>
+
+
+
+<script>
+// this sript is written with global vars that might get conflicted later
+
+var list = ["Sophie Blair", "Elijah Blair", "Maria Blair"],
+    roster = document.getElementById('roster'),
+    // best practice of touching DOM as little as possible:
+    fragment = document.createDocumentFragment(),
+    element;
+
+for (var i = 0, x = list.length; i<x; i++) {
+    element = document.createElement("li");
+    element.appendChild(document.createTextNode(list[i]));
+    fragment.appendChild(element);
+}
+
+roster.appendChild(fragment);
+
+
+// another task, but b/c we now used a function, the 'list' var would've been overwritten.  So I had to change it to 'reqs' and change other var names too
+
+var reqs = ["Cool kid", "Slayed a Dragon", "Loyal"],
+    requirements = document.getElementById('reqs'),
+    fragment1 = document.createDocumentFragment(),
+    element1;
+
+function displayReqs() {
+    for (var i = 0, x = reqs.length; i<x; i++) {
+        element1 = document.createElement('li');
+        element1.appendChild(document.createTextNode(reqs[i]));
+        fragment1.appendChild(element1);
+    }
+    requirements.appendChild(fragment1);
+}
+
+
+
+// much better solution is JS namespace
+// not native to JS, it limits global impact and provides data protection
+
+var AWARDS = {
+    list: ["Golden Globe", "Oscar", "Best Knight"],
+    awards: document.getElementById('awards'),
+    fragment: document.createDocumentFragment(),
+    element: undefined,
+    awardDescription: "And awesome award!",
+
+    displayAwards: function() {
+        for (var i = 0, x = this.list.length; i<x; i++) {
+            this.element = document.createElement('li');
+            this.element.appendChild(document.createTextNode(this.list[i]));
+            this.fragment.appendChild(this.element);
+        }
+        this.awards.appendChild(this.fragment);
+    },
+    DESCRIPTION: {
+
+        // "Oscar": "Very fancy award!",
+        // "Best Knight": "This award is for Knights only!",
+
+        unfoldDescription: function(award) {
+            this.element = document.createElement('li');
+            console.log(this.element); // --> <li></li>
+            console.log(AWARDS.awardDescription); // --> "And awesome award!"
+            this.element.appendChild(document.createTextNode(AWARDS.awardDescription)); // --> <li>And awesome award!</li>
+            console.log(this.element); // --> <li>And awesome award!</li>
+            AWARDS.awards.appendChild(this.element); // --> adds the element to list of awards
+        }
+    }
+};
+
+// nested namespacing is frequent in a module pattern
+// nesting namespaces provides further organization and protection, and keep var names intuitive
+
+
+
+
+
+</script>
+
+</body>
+</html>

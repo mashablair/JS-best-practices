@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Namespacing Exercises</title>
+</head>
+<body>
+
+<h1>Caves of Clarity</h1>
+<button onclick="CAVESOFCLARITY.SECRET.openChest()">Open the Secret Treasure!</button>
+
+<script>
+
+// An object that groups and protects related data and methods in JS is called namespace
+
+// App that has multiple JS files with same-name vars will experience a loss of data due to overwrite, which erases old data in favor of new data.  It happens when these vars are declared globally in multiple files. This error might not be found until run-time.
+
+
+
+// Good example of namespace object:
+var CAVESOFCLARITY = {
+  stalactites: 4235,
+  stalagmites: 3924,
+  bats: 345,
+
+  SECRET: {
+    treasureChests: 3,
+    openChest: function() {
+        this.treasureChests--;
+        console.log('DA DADADA DAAAAAAA!');
+    }
+  }
+};
+
+
+// Namespace is not completely private.  It can be used from other namespaces, or even globally.
+
+
+// If built well, namespaces remain "agnostic" of other namespaces, unless the file-builders design them to work together by providing each with wrapper names
+
+
+</script>
+
+</body>
+</html>

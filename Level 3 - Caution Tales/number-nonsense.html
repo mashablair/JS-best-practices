@@ -50,6 +50,7 @@ console.log(parseInt("9.85")); // --> 9 !!
 // if you're unsure of a browser or JS version, use this
 parseInt("021", 10); // --> 21
 // it's best practice to also pass the radix argument to this method (10)
+// parseInt() will accept any radix value between 2 and 36 upon which to base the numerical string it has received
 
 
 
@@ -139,6 +140,9 @@ console.log(numberOfLambs); // --> 57
 var lambString = "57.99 lazy lambs do bask in the sun.";
 var numberOfLambsBits = parseFloat(lambString);
 console.log(numberOfLambsBits); // --> 57.99
+
+
+// 3. If you can't be sure of browser version, or data type, use both 'typeof' and 'isNaN()' concurrently as a best practice to ensure you receive numbers only
 
 
 </script>
