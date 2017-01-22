@@ -34,6 +34,8 @@ var list = ["Sophie Blair", "Elijah Blair", "Maria Blair"],
     fragment = document.createDocumentFragment(),
     element;
 
+console.log(fragment);
+
 for (var i = 0, x = list.length; i<x; i++) {
     element = document.createElement("li");
     element.appendChild(document.createTextNode(list[i]));

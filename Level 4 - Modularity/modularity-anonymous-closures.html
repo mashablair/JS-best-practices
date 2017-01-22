@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Anonymous Closures</title>
+</head>
+<body>
+
+
+<script>
+
+// so far, our module has only public properties
+// we hope that no one else ever uses its names
+
+// this namespace has a bunch of public vars and methods which can be accessed by any code that knows the name of the space and its properties
+
+var ARMORY = {
+    // should be private
+    // b/c it's out data
+    weaponList: ['Sword', 'Katana', 'Excaliber', 'Long Sword'],
+    armorList: ['shields', 'iron suits', 'shoes', 'gloves'],
+
+    // should be public
+    makeWeaponRequest: function() {},
+    makeArmorRequest: function() {},
+
+    // should be private
+    // b/c it messes with our data
+    removeWeapon: function() {},
+    replaceWeapon: function() {},
+    removeArmor: function() {},
+    replaceArmor: function() {}
+};
+
+// Here, public methods will signal the private methods to safely modify private data
+
+// each request will make some reference to remove/replace method, which will have access to data lists.  This makes closure very valuable.
+
+// Here is how we gonna do it:
+// 1. Wrap the entire set of properties in Anonymous IIFE
+// 2. Make desired private properties into local executable code. These local values and methods will eventually be "closed up" into armory's namespaces
+
+// 3. IMPORTANT: To make some properties public, return them as object
+// These public properties are in their own object, which will become the ARMORY namespace
+
+var ARMORY1 = (function() {
+    // private stuff should be on top
+    // should be private, b/c it's out data
+    var weaponList = ['Sword', 'Katana', 'Excaliber', 'Long Sword'];
+    var armorList = ['shields', 'iron suits', 'shoes', 'gloves'];
+
+    // should be private, b/c it messes with our data
+    // These are now belong to the function, instead of directly to the namespace!
+    var removeWeapon = function() {};
+    var replaceWeapon = function() {};
+    var removeArmor = function() {};
+    var replaceArmor = function() {};
+
+    // should be public, so we gonna return them in an object
+    // Since the function expression is actually called, thir returned object will be handed immediately to the ARMORY variable and become a namespace
+    return {
+        makeWeaponRequest: function() {},
+        makeArmorRequest: function() {},
+    };
+
+
+})();
+
+</script>
+
+</body>
+</html>
